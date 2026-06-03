@@ -19,12 +19,14 @@ export default function UserLayout({
   useNotificationSSE();
 
   React.useEffect(() => {
-    checkAuth().then((user) => {
-      if (!user) {
-        router.push('/login');
-      }
-    });
-  }, [checkAuth, router]);
+    checkAuth();
+  }, [checkAuth]);
+
+  React.useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      router.push('/login');
+    }
+  }, [isLoading, isAuthenticated, router]);
 
   if (isLoading || !isAuthenticated) {
     return (

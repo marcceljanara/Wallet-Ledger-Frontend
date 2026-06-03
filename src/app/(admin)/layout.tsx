@@ -19,14 +19,18 @@ export default function AdminLayout({
   useNotificationSSE();
 
   React.useEffect(() => {
-    checkAuth().then((currentUser) => {
-      if (!currentUser) {
+    checkAuth();
+  }, [checkAuth]);
+
+  React.useEffect(() => {
+    if (!isLoading) {
+      if (!isAuthenticated || !user) {
         router.push('/login');
-      } else if (currentUser.role !== 'ADMIN') {
+      } else if (user.role !== 'ADMIN') {
         router.push('/dashboard');
       }
-    });
-  }, [checkAuth, router]);
+    }
+  }, [isLoading, isAuthenticated, user, router]);
 
   if (isLoading || !isAuthenticated || user?.role !== 'ADMIN') {
     return (
