@@ -8,6 +8,7 @@ import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { Transaction } from '@/types';
 
 function formatCurrency(amount: string) {
   const parsed = parseFloat(amount);
@@ -95,7 +96,7 @@ export default function AdminOverviewPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {transactions.map((txn: any) => (
+                  {transactions.map((txn: Transaction) => (
                     <TableRow key={txn.transaction_id}>
                       <TableCell className="font-mono font-bold text-zinc-400">
                         {/* Under standard admin, viewing transaction details is identical to user detail page since we can query any transaction ID if admin. We will route to same transaction detail page */}

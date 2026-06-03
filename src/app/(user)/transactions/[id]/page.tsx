@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { ArrowLeft } from 'lucide-react';
+import { LedgerEntry } from '@/types';
 
 function formatCurrency(amount: string) {
   const parsed = parseFloat(amount);
@@ -145,7 +146,7 @@ export default function TransactionDetailPage() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {txn.ledger_entries.map((entry: any) => (
+                    {txn.ledger_entries.map((entry: LedgerEntry) => (
                       <TableRow key={entry.entry_id}>
                         <TableCell className="font-mono text-[11px] text-zinc-400">
                           {entry.wallet_id}

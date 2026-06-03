@@ -8,6 +8,8 @@ import { Card, CardHeader, CardContent, CardTitle, CardDescription, CardFooter }
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
+import { isAxiosError } from 'axios';
+
 export default function RegisterPage() {
   const router = useRouter();
   const [email, setEmail] = React.useState('');
@@ -43,13 +45,17 @@ export default function RegisterPage() {
       setTimeout(() => {
         router.push('/login');
       }, 2000);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
-      setError(
-        err.response?.data?.message || 
-        err.response?.data?.error || 
-        'Failed to provision new profile.'
-      );
+      if (isAxiosError(err)) {
+        setError(
+          err.response?.data?.message || 
+          err.response?.data?.error || 
+          'Failed to provision new profile.'
+        );
+      } else {
+        setError('An unexpected error occurred.');
+      }
     } finally {
       setLoading(false);
     }

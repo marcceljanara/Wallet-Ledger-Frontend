@@ -7,6 +7,7 @@ import { Card, CardHeader, CardContent, CardTitle } from '@/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { AdminUserListItem } from '@/types';
 
 function formatCurrency(amount: string) {
   const parsed = parseFloat(amount);
@@ -86,7 +87,7 @@ export default function AdminUsersPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {users.map((u: any) => (
+                  {users.map((u: AdminUserListItem) => (
                     <TableRow key={u.user_id}>
                       <TableCell className="font-mono text-xs font-bold text-zinc-400">
                         {u.user_id}

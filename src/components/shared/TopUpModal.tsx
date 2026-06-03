@@ -7,6 +7,7 @@ import api from '@/lib/axios';
 import { Dialog } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { isAxiosError } from 'axios';
 
 interface TopUpModalProps {
   isOpen: boolean;
@@ -41,13 +42,17 @@ export function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
         handleClose();
       }, 1500);
     },
-    onError: (err: any) => {
+    onError: (err: unknown) => {
       console.error(err);
-      setError(
-        err.response?.data?.message ||
-        err.response?.data?.error ||
-        'Failed to process top-up simulation.'
-      );
+      if (isAxiosError(err)) {
+        setError(
+          err.response?.data?.message ||
+          err.response?.data?.error ||
+          'Failed to process top-up simulation.'
+        );
+      } else {
+        setError('An unexpected error occurred.');
+      }
     },
   });
 

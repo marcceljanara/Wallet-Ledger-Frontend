@@ -53,7 +53,7 @@ export const useNotificationStore = create<NotificationState>((set, get) => ({
       // Let's handle both array response and paginated response { notifications: [], total: ... }
       const data = response.data?.data;
       const list = data?.notifications || [];
-      const unreadCount = list.filter((n: any) => !n.is_read).length;
+      const unreadCount = list.filter((n: Notification) => !n.is_read).length;
       set({ notifications: list, unreadCount });
     } catch (error) {
       console.error('Failed to fetch notifications:', error);

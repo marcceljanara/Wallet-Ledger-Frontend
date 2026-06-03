@@ -7,6 +7,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
+import { LedgerEntry } from '@/types';
 
 function formatCurrency(amount: string) {
   const parsed = parseFloat(amount);
@@ -106,7 +107,7 @@ export default function LedgerEntriesPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {entries.map((entry: any) => (
+                  {entries.map((entry: LedgerEntry) => (
                     <TableRow key={entry.entry_id}>
                       <TableCell className="font-mono text-xs font-bold text-zinc-400">
                         {entry.entry_id}

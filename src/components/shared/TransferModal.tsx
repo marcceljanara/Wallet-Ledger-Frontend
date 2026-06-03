@@ -7,6 +7,7 @@ import api from '@/lib/axios';
 import { Dialog } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { isAxiosError } from 'axios';
 
 interface TransferModalProps {
   isOpen: boolean;
@@ -54,13 +55,17 @@ export function TransferModal({ isOpen, onClose, myWalletId }: TransferModalProp
         handleClose();
       }, 1500);
     },
-    onError: (err: any) => {
+    onError: (err: unknown) => {
       console.error(err);
-      setError(
-        err.response?.data?.message ||
-        err.response?.data?.error ||
-        'Failed to transfer funds. Verify balance and target wallet ID.'
-      );
+      if (isAxiosError(err)) {
+        setError(
+          err.response?.data?.message ||
+          err.response?.data?.error ||
+          'Failed to transfer funds. Verify balance and target wallet ID.'
+        );
+      } else {
+        setError('An unexpected error occurred.');
+      }
     },
   });
 

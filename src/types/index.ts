@@ -38,6 +38,7 @@ export interface LedgerEntry {
   entry_type: LedgerEntryType;
   amount: string;
   created_at: string;
+  transaction_ref_no?: string;
 }
 
 export interface AuditLog {

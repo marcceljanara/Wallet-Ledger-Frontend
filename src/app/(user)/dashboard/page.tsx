@@ -11,8 +11,10 @@ import { ArrowUpRight, ArrowDownLeft, Plus, Send } from 'lucide-react';
 import { TopUpModal } from '@/components/shared/TopUpModal';
 import { TransferModal } from '@/components/shared/TransferModal';
 import Link from 'next/link';
+import { Transaction } from '@/types';
 
 // Formatting helper
+
 function formatCurrency(amount: string) {
   const parsed = parseFloat(amount);
   if (isNaN(parsed)) return 'Rp 0,00';
@@ -166,7 +168,7 @@ export default function UserDashboardPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {recentTxns.map((txn: any) => {
+                {recentTxns.map((txn: Transaction) => {
                   const isDebit = txn.source_wallet_id === wallet?.wallet_id;
                   return (
                     <TableRow key={txn.transaction_id}>

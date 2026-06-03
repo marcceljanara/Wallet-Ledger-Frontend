@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
+import { Transaction } from '@/types';
 
 function formatCurrency(amount: string) {
   const parsed = parseFloat(amount);
@@ -119,7 +120,7 @@ export default function TransactionsHistoryPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {transactions.map((txn: any) => {
+                  {transactions.map((txn: Transaction) => {
                     const isDebit = txn.source_wallet_id === wallet?.wallet_id;
                     return (
                       <TableRow key={txn.transaction_id}>

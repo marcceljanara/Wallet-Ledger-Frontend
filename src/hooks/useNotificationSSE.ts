@@ -4,8 +4,7 @@ import { useNotificationStore } from '@/store/useNotificationStore';
 import { Notification } from '@/types';
 
 export function useNotificationSSE() {
-  const { isAuthenticated } = useAuthStore();
-  const { addNotification, fetchNotifications } = useNotificationStore();
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const eventSourceRef = useRef<EventSource | null>(null);
 
   useEffect(() => {
@@ -18,7 +17,7 @@ export function useNotificationSSE() {
     }
 
     // Fetch existing notifications first
-    fetchNotifications();
+    useNotificationStore.getState().fetchNotifications();
 
     const streamUrl = `${
       process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api/v1'
@@ -38,7 +37,7 @@ export function useNotificationSSE() {
       try {
         console.log('SSE message received:', event.data);
         const newNotif: Notification = JSON.parse(event.data);
-        addNotification(newNotif);
+        useNotificationStore.getState().addNotification(newNotif);
       } catch (err) {
         console.error('Failed to parse SSE notification:', err);
       }
@@ -56,7 +55,7 @@ export function useNotificationSSE() {
         eventSourceRef.current = null;
       }
     };
-  }, [isAuthenticated, addNotification, fetchNotifications]);
+  }, [isAuthenticated]);
 
   return eventSourceRef.current;
 }

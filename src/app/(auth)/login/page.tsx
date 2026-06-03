@@ -9,6 +9,8 @@ import { Card, CardHeader, CardContent, CardTitle, CardDescription, CardFooter }
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
+import { isAxiosError } from 'axios';
+
 export default function LoginPage() {
   const router = useRouter();
   const setUser = useAuthStore((state) => state.setUser);
@@ -56,13 +58,17 @@ export default function LoginPage() {
       } else {
         router.push('/dashboard');
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
-      setError(
-        err.response?.data?.message || 
-        err.response?.data?.error || 
-        'Failed to authenticate. Check credentials.'
-      );
+      if (isAxiosError(err)) {
+        setError(
+          err.response?.data?.message || 
+          err.response?.data?.error || 
+          'Failed to authenticate. Check credentials.'
+        );
+      } else {
+        setError('An unexpected error occurred.');
+      }
     } finally {
       setLoading(false);
     }

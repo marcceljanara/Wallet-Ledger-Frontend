@@ -13,6 +13,7 @@ interface DialogProps {
 
 export function Dialog({ isOpen, onClose, title, children, className }: DialogProps) {
   const [mounted, setMounted] = React.useState(false);
+  const dialogRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
     setMounted(true);
@@ -22,6 +23,8 @@ export function Dialog({ isOpen, onClose, title, children, className }: DialogPr
   React.useEffect(() => {
     if (isOpen && mounted) {
       document.body.style.overflow = 'hidden';
+      // Focus the dialog wrapper when opened to initialize the focus trap
+      dialogRef.current?.focus();
     } else {
       document.body.style.overflow = 'unset';
     }
@@ -30,22 +33,61 @@ export function Dialog({ isOpen, onClose, title, children, className }: DialogPr
     };
   }, [isOpen, mounted]);
 
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+        return;
+      }
+
+      if (e.key === 'Tab' && dialogRef.current) {
+        const focusableElements = dialogRef.current.querySelectorAll(
+          'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusableElements.length === 0) return;
+
+        const firstElement = focusableElements[0] as HTMLElement;
+        const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+
+        if (e.shiftKey) {
+          if (document.activeElement === firstElement) {
+            lastElement.focus();
+            e.preventDefault();
+          }
+        } else {
+          if (document.activeElement === lastElement) {
+            firstElement.focus();
+            e.preventDefault();
+          }
+        }
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleKeyDown);
+    }
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen || !mounted) return null;
 
   return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
       <div
+        ref={dialogRef}
+        tabIndex={-1}
         className={cn(
           "relative w-full max-w-md bg-[#141416] border border-zinc-800 rounded-none shadow-none flex flex-col max-h-[90vh] focus:outline-none animate-in fade-in zoom-in-95 duration-150",
           className
         )}
         role="dialog"
         aria-modal="true"
+        aria-labelledby={title ? "dialog-title" : undefined}
       >
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-zinc-800 bg-black/25">
           {title ? (
-            <h2 className="font-space text-xs font-semibold uppercase tracking-wider text-text-main">
+            <h2 id="dialog-title" className="font-space text-xs font-semibold uppercase tracking-wider text-text-main">
               {title}
             </h2>
           ) : (

@@ -6,6 +6,7 @@ import api from '@/lib/axios';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
+import { AuditLog } from '@/types';
 
 export default function AdminAuditLogsPage() {
   const [page, setPage] = React.useState(1);
@@ -73,7 +74,7 @@ export default function AdminAuditLogsPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {logs.map((log: any) => (
+                  {logs.map((log: AuditLog) => (
                     <TableRow key={log.log_id}>
                       <TableCell className="font-mono text-xs font-bold text-zinc-400">
                         {log.log_id}
