@@ -35,7 +35,7 @@ export default function AdminAuditLogsPage() {
   return (
     <div className="space-y-6">
       {/* Header Info */}
-      <div className="pb-4 border-b border-zinc-900 flex justify-between items-center">
+      <div className="pb-4 border-b border-zinc-900 flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center">
         <div>
           <h1 className="font-space text-2xl font-semibold uppercase tracking-wider text-error">
             Global Activity Logs
@@ -62,42 +62,44 @@ export default function AdminAuditLogsPage() {
             </div>
           ) : (
             <>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Audit ID</TableHead>
-                    <TableHead>User ID</TableHead>
-                    <TableHead>Action</TableHead>
-                    <TableHead>IP Address</TableHead>
-                    <TableHead>Endpoint</TableHead>
-                    <TableHead>Timestamp</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {logs.map((log: AuditLog) => (
-                    <TableRow key={log.log_id}>
-                      <TableCell className="font-mono text-xs font-bold text-zinc-400">
-                        {log.log_id}
-                      </TableCell>
-                      <TableCell className="font-mono text-xs text-text-muted">
-                        {log.user_id}
-                      </TableCell>
-                      <TableCell className="font-mono text-xs text-text-main font-semibold">
-                        {log.action}
-                      </TableCell>
-                      <TableCell className="font-mono text-xs text-text-muted">
-                        {log.ip_address}
-                      </TableCell>
-                      <TableCell className="font-mono text-[10px] text-zinc-500">
-                        {log.endpoint}
-                      </TableCell>
-                      <TableCell className="font-mono text-text-muted">
-                        {new Date(log.created_at).toLocaleString()}
-                      </TableCell>
+              <div className="w-full overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Audit ID</TableHead>
+                      <TableHead>User ID</TableHead>
+                      <TableHead>Action</TableHead>
+                      <TableHead>IP Address</TableHead>
+                      <TableHead>Endpoint</TableHead>
+                      <TableHead>Timestamp</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {logs.map((log: AuditLog) => (
+                      <TableRow key={log.log_id}>
+                        <TableCell className="font-mono text-xs font-bold text-zinc-400">
+                          {log.log_id}
+                        </TableCell>
+                        <TableCell className="font-mono text-xs text-text-muted">
+                          {log.user_id}
+                        </TableCell>
+                        <TableCell className="font-mono text-xs text-text-main font-semibold">
+                          {log.action}
+                        </TableCell>
+                        <TableCell className="font-mono text-xs text-text-muted">
+                          {log.ip_address}
+                        </TableCell>
+                        <TableCell className="font-mono text-[10px] text-zinc-500">
+                          {log.endpoint}
+                        </TableCell>
+                        <TableCell className="font-mono text-text-muted">
+                          {new Date(log.created_at).toLocaleString()}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
 
               {/* Pagination Controls */}
               <div className="flex items-center justify-between p-4 border-t border-zinc-900 bg-black/25">

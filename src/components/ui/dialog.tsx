@@ -77,7 +77,7 @@ export function Dialog({ isOpen, onClose, title, children, className }: DialogPr
         ref={dialogRef}
         tabIndex={-1}
         className={cn(
-          "relative w-full max-w-md bg-[#141416] border border-zinc-800 rounded-none shadow-none flex flex-col max-h-[90vh] focus:outline-none animate-in fade-in zoom-in-95 duration-150",
+          "relative w-[95vw] md:w-full md:max-w-md bg-[#141416] border border-zinc-800 rounded-none shadow-none flex flex-col max-h-[90vh] focus:outline-none animate-in fade-in zoom-in-95 duration-150",
           className
         )}
         role="dialog"

@@ -157,71 +157,73 @@ export default function UserDashboardPage() {
               NO TRANSACTION HISTORY FOUND
             </div>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Reference No</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Amount</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Timestamp</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {recentTxns.map((txn: Transaction) => {
-                  const isDebit = txn.source_wallet_id === wallet?.wallet_id;
-                  return (
-                    <TableRow key={txn.transaction_id}>
-                      <TableCell className="font-mono font-bold text-zinc-400">
-                        <Link href={`/transactions/${txn.transaction_id}`} className="hover:text-secondary hover:underline">
-                          {txn.reference_no}
-                        </Link>
-                      </TableCell>
-                      <TableCell>
-                        <Badge
-                          variant={txn.type === 'TOPUP' ? 'primary' : 'secondary'}
-                        >
-                          {txn.type}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="font-mono text-right font-medium">
-                        <span
-                          className={
-                            txn.type === 'TOPUP'
-                              ? 'text-primary'
-                              : isDebit
-                              ? 'text-error'
-                              : 'text-primary'
-                          }
-                        >
-                          {txn.type === 'TOPUP' ? '+' : isDebit ? '-' : '+'}
-                          {formatCurrency(txn.amount)}
-                        </span>
-                      </TableCell>
-                      <TableCell>
-                        <Badge
-                          variant={
-                            txn.status === 'COMPLETED'
-                              ? 'primary'
-                              : txn.status === 'FAILED'
-                              ? 'danger'
-                              : 'warning'
-                          }
-                        >
-                          {txn.status}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="font-mono text-text-muted">
-                        {new Date(txn.created_at).toLocaleString([], {
-                          dateStyle: 'short',
-                          timeStyle: 'medium',
-                        })}
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
+            <div className="w-full overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Reference No</TableHead>
+                    <TableHead>Type</TableHead>
+                    <TableHead>Amount</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Timestamp</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {recentTxns.map((txn: Transaction) => {
+                    const isDebit = txn.source_wallet_id === wallet?.wallet_id;
+                    return (
+                      <TableRow key={txn.transaction_id}>
+                        <TableCell className="font-mono font-bold text-zinc-400">
+                          <Link href={`/transactions/${txn.transaction_id}`} className="hover:text-secondary hover:underline">
+                            {txn.reference_no}
+                          </Link>
+                        </TableCell>
+                        <TableCell>
+                          <Badge
+                            variant={txn.type === 'TOPUP' ? 'primary' : 'secondary'}
+                          >
+                            {txn.type}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="font-mono text-right font-medium">
+                          <span
+                            className={
+                              txn.type === 'TOPUP'
+                                ? 'text-primary'
+                                : isDebit
+                                ? 'text-error'
+                                : 'text-primary'
+                            }
+                          >
+                            {txn.type === 'TOPUP' ? '+' : isDebit ? '-' : '+'}
+                            {formatCurrency(txn.amount)}
+                          </span>
+                        </TableCell>
+                        <TableCell>
+                          <Badge
+                            variant={
+                              txn.status === 'COMPLETED'
+                                ? 'primary'
+                                : txn.status === 'FAILED'
+                                ? 'danger'
+                                : 'warning'
+                            }
+                          >
+                            {txn.status}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="font-mono text-text-muted">
+                          {new Date(txn.created_at).toLocaleString([], {
+                            dateStyle: 'short',
+                            timeStyle: 'medium',
+                          })}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </div>
           )}
         </CardContent>
       </Card>

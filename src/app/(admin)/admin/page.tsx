@@ -47,7 +47,7 @@ export default function AdminOverviewPage() {
   return (
     <div className="space-y-6">
       {/* Header Info */}
-      <div className="pb-4 border-b border-zinc-900 flex justify-between items-center">
+      <div className="pb-4 border-b border-zinc-900 flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center">
         <div>
           <h1 className="font-space text-2xl font-semibold uppercase tracking-wider text-error">
             Admin System Monitor
@@ -83,61 +83,63 @@ export default function AdminOverviewPage() {
             </div>
           ) : (
             <>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Reference No</TableHead>
-                    <TableHead>Type</TableHead>
-                    <TableHead>Source Wallet</TableHead>
-                    <TableHead>Target Wallet</TableHead>
-                    <TableHead>Amount</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Timestamp</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {transactions.map((txn: Transaction) => (
-                    <TableRow key={txn.transaction_id}>
-                      <TableCell className="font-mono font-bold text-zinc-400">
-                        {/* Under standard admin, viewing transaction details is identical to user detail page since we can query any transaction ID if admin. We will route to same transaction detail page */}
-                        <Link href={`/transactions/${txn.transaction_id}`} className="hover:text-secondary hover:underline">
-                          {txn.reference_no}
-                        </Link>
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant={txn.type === 'TOPUP' ? 'primary' : 'secondary'}>
-                          {txn.type}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="font-mono text-xs text-text-muted">
-                        {txn.source_wallet_id || 'N/A (EXTERNAL)'}
-                      </TableCell>
-                      <TableCell className="font-mono text-xs text-text-muted">
-                        {txn.target_wallet_id}
-                      </TableCell>
-                      <TableCell className="font-mono text-right font-semibold text-foreground">
-                        {formatCurrency(txn.amount)}
-                      </TableCell>
-                      <TableCell>
-                        <Badge
-                          variant={
-                            txn.status === 'COMPLETED'
-                              ? 'primary'
-                              : txn.status === 'FAILED'
-                              ? 'danger'
-                              : 'warning'
-                          }
-                        >
-                          {txn.status}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="font-mono text-text-muted">
-                        {new Date(txn.created_at).toLocaleString()}
-                      </TableCell>
+              <div className="w-full overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Reference No</TableHead>
+                      <TableHead>Type</TableHead>
+                      <TableHead>Source Wallet</TableHead>
+                      <TableHead>Target Wallet</TableHead>
+                      <TableHead>Amount</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Timestamp</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {transactions.map((txn: Transaction) => (
+                      <TableRow key={txn.transaction_id}>
+                        <TableCell className="font-mono font-bold text-zinc-400">
+                          {/* Under standard admin, viewing transaction details is identical to user detail page since we can query any transaction ID if admin. We will route to same transaction detail page */}
+                          <Link href={`/transactions/${txn.transaction_id}`} className="hover:text-secondary hover:underline">
+                            {txn.reference_no}
+                          </Link>
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant={txn.type === 'TOPUP' ? 'primary' : 'secondary'}>
+                            {txn.type}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="font-mono text-xs text-text-muted">
+                          {txn.source_wallet_id || 'N/A (EXTERNAL)'}
+                        </TableCell>
+                        <TableCell className="font-mono text-xs text-text-muted">
+                          {txn.target_wallet_id}
+                        </TableCell>
+                        <TableCell className="font-mono text-right font-semibold text-foreground">
+                          {formatCurrency(txn.amount)}
+                        </TableCell>
+                        <TableCell>
+                          <Badge
+                            variant={
+                              txn.status === 'COMPLETED'
+                                ? 'primary'
+                                : txn.status === 'FAILED'
+                                ? 'danger'
+                                : 'warning'
+                            }
+                          >
+                            {txn.status}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="font-mono text-text-muted">
+                          {new Date(txn.created_at).toLocaleString()}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
 
               {/* Pagination Controls */}
               <div className="flex items-center justify-between p-4 border-t border-zinc-900 bg-black/25">

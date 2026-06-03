@@ -70,7 +70,7 @@ export default function TransactionsHistoryPage() {
         </div>
 
         {/* Filters */}
-        <div className="flex gap-2 mt-2 md:mt-0">
+        <div className="flex flex-wrap gap-2 mt-2 md:mt-0">
           <Button
             variant={type === '' ? 'primary' : 'secondary'}
             size="sm"
@@ -107,7 +107,8 @@ export default function TransactionsHistoryPage() {
             </div>
           ) : (
             <>
-              <Table>
+              <div className="w-full overflow-x-auto">
+                <Table>
                 <TableHeader>
                   <TableRow>
                     <TableHead>Reference No</TableHead>
@@ -177,6 +178,7 @@ export default function TransactionsHistoryPage() {
                   })}
                 </TableBody>
               </Table>
+            </div>
 
               {/* Pagination Controls */}
               <div className="flex items-center justify-between p-4 border-t border-zinc-900 bg-black/25">

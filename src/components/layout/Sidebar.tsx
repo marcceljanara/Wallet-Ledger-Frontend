@@ -16,7 +16,7 @@ export function Sidebar() {
   ];
 
   return (
-    <aside className="w-64 border-r border-zinc-800 bg-[#141416] flex flex-col h-[calc(100vh-3rem)]">
+    <aside className="hidden md:flex w-64 border-r border-zinc-800 bg-[#141416] flex-col h-[calc(100vh-3rem)]">
       {/* Menu Area */}
       <nav className="flex-1 p-4 flex flex-col gap-1">
         <div className="font-mono text-[9px] font-bold uppercase tracking-wider text-text-muted px-3 mb-2">

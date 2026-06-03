@@ -76,47 +76,49 @@ export default function AdminUsersPage() {
             </div>
           ) : (
             <>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>User ID (UUID)</TableHead>
-                    <TableHead>Email Address</TableHead>
-                    <TableHead>Access Level (Role)</TableHead>
-                    <TableHead>Wallet Associated</TableHead>
-                    <TableHead>Created At</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {users.map((u: AdminUserListItem) => (
-                    <TableRow key={u.user_id}>
-                      <TableCell className="font-mono text-xs font-bold text-zinc-400">
-                        {u.user_id}
-                      </TableCell>
-                      <TableCell className="font-mono text-xs text-text-main">
-                        {u.email}
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant={u.role === 'ADMIN' ? 'danger' : 'secondary'}>
-                          {u.role}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="font-mono text-xs">
-                        {u.wallet_id ? (
-                          <div className="flex flex-col gap-0.5">
-                            <span className="text-secondary font-semibold">{u.wallet_id}</span>
-                            <span className="text-[10px] text-primary">{formatCurrency(u.balance || '0')}</span>
-                          </div>
-                        ) : (
-                          <span className="text-text-muted">N/A</span>
-                        )}
-                      </TableCell>
-                      <TableCell className="font-mono text-text-muted text-xs">
-                        {new Date(u.created_at).toLocaleString()}
-                      </TableCell>
+              <div className="w-full overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>User ID (UUID)</TableHead>
+                      <TableHead>Email Address</TableHead>
+                      <TableHead>Access Level (Role)</TableHead>
+                      <TableHead>Wallet Associated</TableHead>
+                      <TableHead>Created At</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {users.map((u: AdminUserListItem) => (
+                      <TableRow key={u.user_id}>
+                        <TableCell className="font-mono text-xs font-bold text-zinc-400">
+                          {u.user_id}
+                        </TableCell>
+                        <TableCell className="font-mono text-xs text-text-main">
+                          {u.email}
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant={u.role === 'ADMIN' ? 'danger' : 'secondary'}>
+                            {u.role}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="font-mono text-xs">
+                          {u.wallet_id ? (
+                            <div className="flex flex-col gap-0.5">
+                              <span className="text-secondary font-semibold">{u.wallet_id}</span>
+                              <span className="text-[10px] text-primary">{formatCurrency(u.balance || '0')}</span>
+                            </div>
+                          ) : (
+                            <span className="text-text-muted">N/A</span>
+                          )}
+                        </TableCell>
+                        <TableCell className="font-mono text-text-muted text-xs">
+                          {new Date(u.created_at).toLocaleString()}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
 
               {/* Pagination Controls */}
               <div className="flex items-center justify-between p-4 border-t border-zinc-900 bg-black/25">
