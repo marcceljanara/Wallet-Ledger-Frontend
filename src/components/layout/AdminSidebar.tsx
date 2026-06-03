@@ -1,16 +1,11 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { BarChart3, Users, ClipboardList, ArrowLeft } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { adminMenuItems } from '@/lib/navigation';
 
 export function AdminSidebar() {
   const pathname = usePathname();
-
-  const menuItems = [
-    { name: 'Admin Overview', href: '/admin', icon: BarChart3 },
-    { name: 'User Management', href: '/admin/users', icon: Users },
-    { name: 'Global Audit Logs', href: '/admin/audit-logs', icon: ClipboardList },
-  ];
 
   return (
     <aside className="hidden md:flex w-64 border-r border-zinc-800 bg-[#141416] flex-col h-[calc(100vh-3rem)]">
@@ -19,7 +14,7 @@ export function AdminSidebar() {
         <div className="font-mono text-[9px] font-bold uppercase tracking-wider text-error px-3 mb-2">
           Admin Control Center
         </div>
-        {menuItems.map((item) => {
+        {adminMenuItems.map((item) => {
           const Icon = item.icon;
           const isActive = item.href === '/admin'
             ? pathname === '/admin'

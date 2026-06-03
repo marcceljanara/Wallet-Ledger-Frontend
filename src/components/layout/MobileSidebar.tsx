@@ -1,9 +1,10 @@
 import * as React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { X, Wallet, History, FileText, Database, Shield, BarChart3, Users, ClipboardList, ArrowLeft } from 'lucide-react';
+import { X, Shield, ArrowLeft } from 'lucide-react';
 import { useAuthStore } from '@/store/useAuthStore';
 import { cn } from '@/lib/utils';
+import { userMenuItems, adminMenuItems } from '@/lib/navigation';
 
 interface MobileSidebarProps {
   isOpen: boolean;
@@ -38,19 +39,6 @@ export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
   if (!isOpen) return null;
 
   const isAdminRoute = pathname.startsWith('/admin');
-
-  const userMenuItems = [
-    { name: 'Dashboard', href: '/dashboard', icon: Wallet },
-    { name: 'Transactions', href: '/transactions', icon: History },
-    { name: 'Ledger Entries', href: '/ledger', icon: FileText },
-    { name: 'Audit Logs', href: '/audit-logs', icon: Database },
-  ];
-
-  const adminMenuItems = [
-    { name: 'Admin Overview', href: '/admin', icon: BarChart3 },
-    { name: 'User Management', href: '/admin/users', icon: Users },
-    { name: 'Global Audit Logs', href: '/admin/audit-logs', icon: ClipboardList },
-  ];
 
   return (
     <div className="fixed inset-0 z-40 bg-black/60 backdrop-blur-xs flex justify-start">
@@ -90,6 +78,7 @@ export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
                   <Link
                     key={item.href}
                     href={item.href}
+                    onClick={onClose}
                     className={cn(
                       "flex items-center gap-3 px-3 py-2.5 text-xs font-mono uppercase tracking-wider border rounded-none transition-colors",
                       isActive
@@ -112,6 +101,7 @@ export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
                   <Link
                     key={item.href}
                     href={item.href}
+                    onClick={onClose}
                     className={cn(
                       "flex items-center gap-3 px-3 py-2.5 text-xs font-mono uppercase tracking-wider border rounded-none transition-colors",
                       isActive
@@ -133,6 +123,7 @@ export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
           {isAdminRoute ? (
             <Link
               href="/dashboard"
+              onClick={onClose}
               className="flex items-center justify-center gap-2 px-3 py-2 text-xs font-mono uppercase tracking-wider border border-zinc-800 text-text-muted hover:text-text-main hover:border-zinc-700 transition-colors rounded-none w-full"
             >
               <ArrowLeft size={12} />
@@ -142,6 +133,7 @@ export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
             user?.role === 'ADMIN' && (
               <Link
                 href="/admin"
+                onClick={onClose}
                 className="flex items-center justify-center gap-2 px-3 py-2 text-xs font-mono uppercase tracking-wider border border-error/50 text-error hover:bg-error/10 hover:border-error transition-colors rounded-none w-full"
               >
                 <Shield size={12} />

@@ -1,19 +1,13 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Wallet, History, FileText, Database, Shield } from 'lucide-react';
+import { Shield } from 'lucide-react';
 import { useAuthStore } from '@/store/useAuthStore';
 import { cn } from '@/lib/utils';
+import { userMenuItems } from '@/lib/navigation';
 
 export function Sidebar() {
   const pathname = usePathname();
   const { user } = useAuthStore();
-
-  const menuItems = [
-    { name: 'Dashboard', href: '/dashboard', icon: Wallet },
-    { name: 'Transactions', href: '/transactions', icon: History },
-    { name: 'Ledger Entries', href: '/ledger', icon: FileText },
-    { name: 'Audit Logs', href: '/audit-logs', icon: Database },
-  ];
 
   return (
     <aside className="hidden md:flex w-64 border-r border-zinc-800 bg-[#141416] flex-col h-[calc(100vh-3rem)]">
@@ -22,7 +16,7 @@ export function Sidebar() {
         <div className="font-mono text-[9px] font-bold uppercase tracking-wider text-text-muted px-3 mb-2">
           Workspace
         </div>
-        {menuItems.map((item) => {
+        {userMenuItems.map((item) => {
           const Icon = item.icon;
           const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
           return (
