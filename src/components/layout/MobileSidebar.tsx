@@ -31,9 +31,13 @@ export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
     };
   }, [isOpen, onClose]);
 
-  // Automatically close sidebar when pathname changes
+  // Automatically close sidebar when pathname changes (but not on initial mount)
+  const lastPathname = React.useRef(pathname);
   React.useEffect(() => {
-    onClose();
+    if (lastPathname.current !== pathname) {
+      onClose();
+      lastPathname.current = pathname;
+    }
   }, [pathname, onClose]);
 
   if (!isOpen) return null;
