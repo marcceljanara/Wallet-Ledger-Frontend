@@ -95,47 +95,49 @@ export default function LedgerEntriesPage() {
             </div>
           ) : (
             <>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Ledger Entry ID</TableHead>
-                    <TableHead>Transaction Reference</TableHead>
-                    <TableHead>Wallet ID</TableHead>
-                    <TableHead>Entry Type</TableHead>
-                    <TableHead>Mutation Amount</TableHead>
-                    <TableHead>Timestamp</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {entries.map((entry: LedgerEntry) => (
-                    <TableRow key={entry.entry_id}>
-                      <TableCell className="font-mono text-xs font-bold text-zinc-400">
-                        {entry.entry_id}
-                      </TableCell>
-                      <TableCell className="font-mono text-xs text-text-main">
-                        {entry.transaction_ref_no || entry.transaction_id || 'N/A'}
-                      </TableCell>
-                      <TableCell className="font-mono text-xs text-text-muted">
-                        {entry.wallet_id}
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant={entry.entry_type === 'CREDIT' ? 'primary' : 'warning'}>
-                          {entry.entry_type}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="font-mono text-right font-medium">
-                        <span className={entry.entry_type === 'CREDIT' ? 'text-primary' : 'text-error'}>
-                          {entry.entry_type === 'CREDIT' ? '+' : '-'}
-                          {formatCurrency(entry.amount)}
-                        </span>
-                      </TableCell>
-                      <TableCell className="font-mono text-text-muted">
-                        {new Date(entry.created_at).toLocaleString()}
-                      </TableCell>
+              <div className="w-full overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Ledger Entry ID</TableHead>
+                      <TableHead>Transaction Reference</TableHead>
+                      <TableHead>Wallet ID</TableHead>
+                      <TableHead>Entry Type</TableHead>
+                      <TableHead>Mutation Amount</TableHead>
+                      <TableHead>Timestamp</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {entries.map((entry: LedgerEntry) => (
+                      <TableRow key={entry.entry_id}>
+                        <TableCell className="font-mono text-xs font-bold text-zinc-400">
+                          {entry.entry_id}
+                        </TableCell>
+                        <TableCell className="font-mono text-xs text-text-main">
+                          {entry.transaction_ref_no || entry.transaction_id || 'N/A'}
+                        </TableCell>
+                        <TableCell className="font-mono text-xs text-text-muted">
+                          {entry.wallet_id}
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant={entry.entry_type === 'CREDIT' ? 'primary' : 'warning'}>
+                            {entry.entry_type}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="font-mono text-right font-medium">
+                          <span className={entry.entry_type === 'CREDIT' ? 'text-primary' : 'text-error'}>
+                            {entry.entry_type === 'CREDIT' ? '+' : '-'}
+                            {formatCurrency(entry.amount)}
+                          </span>
+                        </TableCell>
+                        <TableCell className="font-mono text-text-muted">
+                          {new Date(entry.created_at).toLocaleString()}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
 
               {/* Pagination Controls */}
               <div className="flex items-center justify-between p-4 border-t border-zinc-900 bg-black/25">

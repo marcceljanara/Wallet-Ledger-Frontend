@@ -137,33 +137,35 @@ export default function TransactionDetailPage() {
                   NO LEDGER ENTRIES GENERATED
                 </div>
               ) : (
-                <Table className="border-0">
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Wallet ID</TableHead>
-                      <TableHead>Type</TableHead>
-                      <TableHead>Amount</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {txn.ledger_entries.map((entry: LedgerEntry) => (
-                      <TableRow key={entry.entry_id}>
-                        <TableCell className="font-mono text-[11px] text-zinc-400">
-                          {entry.wallet_id}
-                        </TableCell>
-                        <TableCell>
-                          <Badge variant={entry.entry_type === 'CREDIT' ? 'primary' : 'warning'}>
-                            {entry.entry_type}
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="font-mono text-right font-medium text-text-main">
-                          {entry.entry_type === 'CREDIT' ? '+' : '-'}
-                          {formatCurrency(entry.amount)}
-                        </TableCell>
+                <div className="w-full overflow-x-auto">
+                  <Table className="border-0">
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Wallet ID</TableHead>
+                        <TableHead>Type</TableHead>
+                        <TableHead>Amount</TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                    </TableHeader>
+                    <TableBody>
+                      {txn.ledger_entries.map((entry: LedgerEntry) => (
+                        <TableRow key={entry.entry_id}>
+                          <TableCell className="font-mono text-[11px] text-zinc-400">
+                            {entry.wallet_id}
+                          </TableCell>
+                          <TableCell>
+                            <Badge variant={entry.entry_type === 'CREDIT' ? 'primary' : 'warning'}>
+                              {entry.entry_type}
+                            </Badge>
+                          </TableCell>
+                          <TableCell className="font-mono text-right font-medium text-text-main">
+                            {entry.entry_type === 'CREDIT' ? '+' : '-'}
+                            {formatCurrency(entry.amount)}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
               )}
             </CardContent>
           </Card>

@@ -56,38 +56,40 @@ export default function UserAuditLogsPage() {
             </div>
           ) : (
             <>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Audit Log ID</TableHead>
-                    <TableHead>Action Description</TableHead>
-                    <TableHead>IP Address</TableHead>
-                    <TableHead>API Endpoint</TableHead>
-                    <TableHead>Timestamp</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {logs.map((log: AuditLog) => (
-                    <TableRow key={log.log_id}>
-                      <TableCell className="font-mono text-xs font-bold text-zinc-400">
-                        {log.log_id}
-                      </TableCell>
-                      <TableCell className="font-mono text-xs text-text-main font-semibold">
-                        {log.action}
-                      </TableCell>
-                      <TableCell className="font-mono text-xs text-text-muted">
-                        {log.ip_address}
-                      </TableCell>
-                      <TableCell className="font-mono text-[10px] text-zinc-500">
-                        {log.endpoint}
-                      </TableCell>
-                      <TableCell className="font-mono text-text-muted">
-                        {new Date(log.created_at).toLocaleString()}
-                      </TableCell>
+              <div className="w-full overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Audit Log ID</TableHead>
+                      <TableHead>Action Description</TableHead>
+                      <TableHead>IP Address</TableHead>
+                      <TableHead>API Endpoint</TableHead>
+                      <TableHead>Timestamp</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {logs.map((log: AuditLog) => (
+                      <TableRow key={log.log_id}>
+                        <TableCell className="font-mono text-xs font-bold text-zinc-400">
+                          {log.log_id}
+                        </TableCell>
+                        <TableCell className="font-mono text-xs text-text-main font-semibold">
+                          {log.action}
+                        </TableCell>
+                        <TableCell className="font-mono text-xs text-text-muted">
+                          {log.ip_address}
+                        </TableCell>
+                        <TableCell className="font-mono text-[10px] text-zinc-500">
+                          {log.endpoint}
+                        </TableCell>
+                        <TableCell className="font-mono text-text-muted">
+                          {new Date(log.created_at).toLocaleString()}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
 
               {/* Pagination Controls */}
               <div className="flex items-center justify-between p-4 border-t border-zinc-900 bg-black/25">

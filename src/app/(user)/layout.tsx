@@ -6,6 +6,7 @@ import { useAuthStore } from '@/store/useAuthStore';
 import { useNotificationSSE } from '@/hooks/useNotificationSSE';
 import { Navbar } from '@/components/layout/Navbar';
 import { Sidebar } from '@/components/layout/Sidebar';
+import { NotificationToast } from '@/components/shared/NotificationToast';
 
 export default function UserLayout({
   children,
@@ -44,10 +45,11 @@ export default function UserLayout({
       <Navbar />
       <div className="flex flex-1 overflow-hidden">
         <Sidebar />
-        <main className="flex-1 overflow-y-auto bg-background p-6 font-sans">
+        <main className="flex-1 overflow-y-auto bg-background p-4 md:p-6 font-sans">
           {children}
         </main>
       </div>
+      <NotificationToast />
     </div>
   );
 }

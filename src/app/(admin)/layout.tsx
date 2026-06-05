@@ -6,6 +6,7 @@ import { useAuthStore } from '@/store/useAuthStore';
 import { useNotificationSSE } from '@/hooks/useNotificationSSE';
 import { Navbar } from '@/components/layout/Navbar';
 import { AdminSidebar } from '@/components/layout/AdminSidebar';
+import { NotificationToast } from '@/components/shared/NotificationToast';
 
 export default function AdminLayout({
   children,
@@ -48,10 +49,11 @@ export default function AdminLayout({
       <Navbar />
       <div className="flex flex-1 overflow-hidden">
         <AdminSidebar />
-        <main className="flex-1 overflow-y-auto bg-background p-6 font-sans">
+        <main className="flex-1 overflow-y-auto bg-background p-4 md:p-6 font-sans">
           {children}
         </main>
       </div>
+      <NotificationToast />
     </div>
   );
 }

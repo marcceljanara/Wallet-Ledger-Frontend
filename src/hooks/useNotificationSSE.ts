@@ -33,15 +33,18 @@ export function useNotificationSSE() {
       console.log('SSE connection opened');
     };
 
-    es.onmessage = (event) => {
+    const handleNotification = (event: MessageEvent) => {
       try {
-        console.log('SSE message received:', event.data);
+        console.log('SSE notification received:', event.data);
         const newNotif: Notification = JSON.parse(event.data);
         useNotificationStore.getState().addNotification(newNotif);
+        useNotificationStore.getState().setActiveToast(newNotif);
       } catch (err) {
         console.error('Failed to parse SSE notification:', err);
       }
     };
+
+    es.addEventListener('notification', handleNotification);
 
     es.onerror = (err) => {
       console.error('SSE connection error:', err);
@@ -50,6 +53,7 @@ export function useNotificationSSE() {
 
     return () => {
       console.log('Closing SSE connection');
+      es.removeEventListener('notification', handleNotification);
       es.close();
       if (eventSourceRef.current === es) {
         eventSourceRef.current = null;
