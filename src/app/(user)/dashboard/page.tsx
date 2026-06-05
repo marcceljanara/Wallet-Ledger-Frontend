@@ -7,9 +7,10 @@ import { Card, CardHeader, CardContent, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { ArrowUpRight, ArrowDownLeft, Plus, Send } from 'lucide-react';
+import { ArrowUpRight, ArrowDownLeft, Plus, Send, QrCode } from 'lucide-react';
 import { TopUpModal } from '@/components/shared/TopUpModal';
 import { TransferModal } from '@/components/shared/TransferModal';
+import { ReceiveModal } from '@/components/shared/ReceiveModal';
 import Link from 'next/link';
 import { Transaction } from '@/types';
 
@@ -28,6 +29,7 @@ function formatCurrency(amount: string) {
 export default function UserDashboardPage() {
   const [isTopUpOpen, setIsTopUpOpen] = React.useState(false);
   const [isTransferOpen, setIsTransferOpen] = React.useState(false);
+  const [isReceiveOpen, setIsReceiveOpen] = React.useState(false);
 
   // Query wallet info
   const { data: wallet, isLoading: isWalletLoading, error: walletError } = useQuery({
@@ -125,6 +127,14 @@ export default function UserDashboardPage() {
               disabled={isWalletLoading}
             >
               <Send size={14} /> Send Transfer
+            </Button>
+            <Button
+              variant="secondary"
+              className="w-full flex items-center justify-center gap-2"
+              onClick={() => setIsReceiveOpen(true)}
+              disabled={isWalletLoading}
+            >
+              <QrCode size={14} /> Receive Funds
             </Button>
           </CardContent>
         </Card>
@@ -234,6 +244,11 @@ export default function UserDashboardPage() {
         isOpen={isTransferOpen}
         onClose={() => setIsTransferOpen(false)}
         myWalletId={wallet?.wallet_id}
+      />
+      <ReceiveModal
+        isOpen={isReceiveOpen}
+        onClose={() => setIsReceiveOpen(false)}
+        walletId={wallet?.wallet_id}
       />
     </div>
   );
