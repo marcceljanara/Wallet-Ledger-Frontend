@@ -1,8 +1,5 @@
 import * as React from 'react';
-import { X, Trash2, CheckCircle2 } from 'lucide-react';
 import { useNotificationStore } from '@/store/useNotificationStore';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 
 interface NotificationDrawerProps {
   isOpen: boolean;
@@ -10,116 +7,131 @@ interface NotificationDrawerProps {
   onOpenHistory: () => void;
 }
 
+function formatTimeAgo(createdAt: string) {
+  const date = new Date(createdAt);
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffMins = Math.floor(diffMs / 60000);
+  if (diffMins < 1) return 'Just now';
+  if (diffMins < 60) return `${diffMins}m ago`;
+  const diffHours = Math.floor(diffMins / 60);
+  if (diffHours < 24) return `${diffHours}h ago`;
+  return date.toLocaleDateString([], { month: 'short', day: 'numeric' });
+}
+
 export function NotificationDrawer({ isOpen, onClose, onOpenHistory }: NotificationDrawerProps) {
-  const { notifications, markAsRead, clearAll } = useNotificationStore();
-  const drawerRef = React.useRef<HTMLDivElement>(null);
-
-  React.useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (drawerRef.current && !drawerRef.current.contains(event.target as Node)) {
-        onClose();
-      }
-    }
-
-    if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isOpen, onClose]);
+  const { notifications, markAsRead, markAllAsRead, clearAll } = useNotificationStore();
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-40 bg-black/60 backdrop-blur-xs flex justify-end">
+    <>
+      {/* Invisible overlay for capturing click outside */}
+      <div className="fixed inset-0 z-40 bg-transparent" onClick={onClose} />
+
+      {/* Dropdown Container */}
       <div
-        ref={drawerRef}
-        className="w-full max-w-sm bg-[#141416] border-l border-zinc-800 h-full flex flex-col focus:outline-none animate-in slide-in-from-right duration-200"
+        className="absolute top-10 right-0 w-[calc(100vw-2rem)] sm:w-96 max-h-[500px] bg-[#141416] border border-border-subtle shadow-2xl z-50 flex flex-col focus:outline-none animate-in fade-in-50 slide-in-from-top-2 duration-150"
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-zinc-800 bg-black/25">
-          <div className="flex items-center gap-2">
-            <span className="font-space text-xs font-semibold uppercase tracking-wider text-foreground">
-              Notifications
-            </span>
-            {notifications.filter(n => !n.is_read).length > 0 && (
-              <Badge variant="primary">
-                {notifications.filter(n => !n.is_read).length} New
-              </Badge>
+        <div className="p-4 border-b border-border-subtle flex justify-between items-center bg-black/25">
+          <h3 className="font-mono text-xs font-bold text-primary tracking-widest uppercase">
+            EVENT_STREAM_MONITOR
+          </h3>
+          <div className="flex gap-4">
+            {notifications.filter((n) => !n.is_read).length > 0 && (
+              <button
+                onClick={() => {
+                  markAllAsRead();
+                }}
+                className="text-[10px] font-mono font-bold tracking-wider uppercase text-outline hover:text-primary transition-colors focus:outline-none"
+              >
+                MARK_ALL_READ
+              </button>
             )}
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={onOpenHistory}
-              className="text-primary hover:underline text-[9px] font-mono uppercase tracking-wider focus:outline-none p-1 border border-transparent focus:border-secondary"
-            >
-              LOGS
-            </button>
-            <button
-              onClick={onClose}
-              className="text-text-muted hover:text-text-main p-1 transition-colors focus:outline-none border border-transparent focus:border-secondary"
-            >
-              <X size={14} />
-            </button>
+            {notifications.length > 0 && (
+              <button
+                onClick={() => {
+                  clearAll();
+                }}
+                className="text-[10px] font-mono font-bold tracking-wider uppercase text-outline hover:text-error transition-colors focus:outline-none"
+              >
+                CLEAR_LOGS
+              </button>
+            )}
           </div>
         </div>
 
-        {/* Content */}
-        <div className="flex-1 overflow-y-auto divide-y divide-zinc-900">
+        {/* Scrollable list */}
+        <div className="overflow-y-auto flex-1 max-h-[380px] custom-scrollbar divide-y divide-border-subtle">
           {notifications.length === 0 ? (
-            <div className="p-8 text-center text-text-muted font-mono text-xs">
+            <div className="p-8 text-center text-text-muted font-mono text-xs uppercase tracking-wider">
               NO INCOMING ALERTS
             </div>
           ) : (
-            notifications.map((notif) => (
-              <div
-                key={notif.id}
-                className={`p-4 transition-colors relative ${
-                  notif.is_read ? 'bg-transparent' : 'bg-primary/5'
-                }`}
-              >
-                {!notif.is_read && (
-                  <div className="absolute top-4 left-2 w-1.5 h-1.5 bg-primary rounded-none" />
-                )}
-                <div className="pl-2">
-                  <h4 className={`text-xs font-space font-medium ${notif.is_read ? 'text-text-muted' : 'text-text-main'}`}>
-                    {notif.title}
-                  </h4>
-                  <p className="text-xs text-text-muted mt-1 leading-relaxed">{notif.message}</p>
-                  <div className="flex justify-between items-center mt-3">
-                    <span className="font-mono text-[9px] text-zinc-600">
-                      {new Date(notif.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
-                    </span>
-                    {!notif.is_read && (
-                      <button
-                        onClick={() => markAsRead(notif.id)}
-                        className="inline-flex items-center gap-1 font-mono text-[9px] uppercase tracking-wider text-primary hover:text-primary-container focus:outline-none"
+            notifications.map((notif) => {
+              const formattedTitle = notif.title
+                .toUpperCase()
+                .replace(/\s+/g, '_');
+
+              return (
+                <div
+                  key={notif.id}
+                  onClick={() => {
+                    if (!notif.is_read) {
+                      markAsRead(notif.id);
+                    }
+                  }}
+                  className="p-4 hover:bg-surface-container-low transition-colors group cursor-pointer text-left"
+                >
+                  <div className="flex items-start gap-3">
+                    {/* Unread Pip */}
+                    <div
+                      className={`w-2 h-2 mt-1.5 rounded-full shrink-0 ${
+                        notif.is_read ? 'bg-outline/25' : 'bg-primary'
+                      }`}
+                    />
+                    
+                    <div className="flex-1 min-w-0">
+                      <div className="flex justify-between items-start mb-1 gap-2">
+                        <p
+                          className={`font-mono text-[10px] font-bold tracking-wider uppercase truncate ${
+                            notif.is_read ? 'text-outline' : 'text-on-surface'
+                          }`}
+                        >
+                          {formattedTitle}
+                        </p>
+                        <span className="font-mono text-[10px] text-outline shrink-0">
+                          {formatTimeAgo(notif.created_at)}
+                        </span>
+                      </div>
+                      <p
+                        className={`font-mono text-xs leading-relaxed break-words ${
+                          notif.is_read ? 'text-outline' : 'text-on-surface-variant'
+                        }`}
                       >
-                        <CheckCircle2 size={10} /> Mark Read
-                      </button>
-                    )}
+                        {notif.message}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))
+              );
+            })
           )}
         </div>
 
         {/* Footer */}
-        {notifications.length > 0 && (
-          <div className="p-4 border-t border-zinc-800 bg-black/25 flex justify-end">
-            <Button
-              variant="secondary"
-              size="sm"
-              className="text-error border-error/50 hover:bg-error/10 hover:border-error w-full flex items-center justify-center gap-1.5"
-              onClick={clearAll}
-            >
-              <Trash2 size={12} /> Clear All Alerts
-            </Button>
-          </div>
-        )}
+        <div className="p-2 bg-surface-container-lowest text-center border-t border-border-subtle">
+          <button
+            onClick={() => {
+              onOpenHistory();
+            }}
+            className="font-mono text-[10px] font-bold tracking-wider uppercase text-primary hover:underline focus:outline-none"
+          >
+            VIEW_ALL_EVENTS
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

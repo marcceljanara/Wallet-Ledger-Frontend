@@ -50,19 +50,31 @@ export function Navbar() {
             {user?.email}
           </span>
 
-          {/* Notifications Button */}
-          <button
-            onClick={() => setIsDrawerOpen(true)}
-            className="relative p-1.5 border border-zinc-800 bg-black hover:border-zinc-700 text-text-muted hover:text-text-main transition-all focus:outline-none focus:border-secondary"
-            aria-label="Open notifications"
-          >
-            <Bell size={14} />
-            {unreadCount > 0 && (
-              <span className="absolute -top-1.5 -right-1.5 bg-primary text-on-primary font-mono text-[8px] font-bold px-1 min-w-[14px] h-[14px] flex items-center justify-center rounded-none border border-black animate-pulse">
-                {unreadCount}
-              </span>
-            )}
-          </button>
+          {/* Notifications Button & Dropdown */}
+          <div className="relative">
+            <button
+              onClick={() => setIsDrawerOpen(!isDrawerOpen)}
+              className="relative p-1.5 border border-zinc-800 bg-black hover:border-zinc-700 text-text-muted hover:text-text-main transition-all focus:outline-none focus:border-secondary"
+              aria-label="Open notifications"
+              id="notification-bell-btn"
+            >
+              <Bell size={14} />
+              {unreadCount > 0 && (
+                <span className="absolute -top-1.5 -right-1.5 bg-primary text-on-primary font-mono text-[8px] font-bold px-1 min-w-[14px] h-[14px] flex items-center justify-center rounded-none border border-black animate-pulse">
+                  {unreadCount}
+                </span>
+              )}
+            </button>
+
+            <NotificationDrawer
+              isOpen={isDrawerOpen}
+              onClose={() => setIsDrawerOpen(false)}
+              onOpenHistory={() => {
+                setIsDrawerOpen(false);
+                setIsModalOpen(true);
+              }}
+            />
+          </div>
 
           {/* Logout Button */}
           <button
@@ -74,15 +86,6 @@ export function Navbar() {
           </button>
         </div>
       </header>
-
-      <NotificationDrawer
-        isOpen={isDrawerOpen}
-        onClose={() => setIsDrawerOpen(false)}
-        onOpenHistory={() => {
-          setIsDrawerOpen(false);
-          setIsModalOpen(true);
-        }}
-      />
 
       <NotificationManagementModal
         isOpen={isModalOpen}

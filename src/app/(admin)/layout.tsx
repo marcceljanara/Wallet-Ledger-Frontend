@@ -6,6 +6,7 @@ import { useAuthStore } from '@/store/useAuthStore';
 import { useNotificationSSE } from '@/hooks/useNotificationSSE';
 import { Navbar } from '@/components/layout/Navbar';
 import { AdminSidebar } from '@/components/layout/AdminSidebar';
+import { NotificationToast } from '@/components/shared/NotificationToast';
 
 export default function AdminLayout({
   children,
@@ -52,6 +53,7 @@ export default function AdminLayout({
           {children}
         </main>
       </div>
+      <NotificationToast />
     </div>
   );
 }

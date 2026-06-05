@@ -6,6 +6,7 @@ import { useAuthStore } from '@/store/useAuthStore';
 import { useNotificationSSE } from '@/hooks/useNotificationSSE';
 import { Navbar } from '@/components/layout/Navbar';
 import { Sidebar } from '@/components/layout/Sidebar';
+import { NotificationToast } from '@/components/shared/NotificationToast';
 
 export default function UserLayout({
   children,
@@ -48,6 +49,7 @@ export default function UserLayout({
           {children}
         </main>
       </div>
+      <NotificationToast />
     </div>
   );
 }

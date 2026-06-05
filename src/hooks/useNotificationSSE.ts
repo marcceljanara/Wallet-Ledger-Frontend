@@ -38,6 +38,7 @@ export function useNotificationSSE() {
         console.log('SSE notification received:', event.data);
         const newNotif: Notification = JSON.parse(event.data);
         useNotificationStore.getState().addNotification(newNotif);
+        useNotificationStore.getState().setActiveToast(newNotif);
       } catch (err) {
         console.error('Failed to parse SSE notification:', err);
       }
